@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import { Button, Link, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ToastContainer } from 'react-toastify';
 
-import { useInput } from '../../hooks/useInput';
 import './index.scss';
-import { dateIsValid, transformDate, transformDateJson } from '../../utils/converter';
+import { ErrorToast } from '../../utils/notifications';
+import { useInput } from '../../hooks/useInput';
+import { transformDateJson } from '../../utils/converter';
 import { registerUser } from '../../api/user/user';
 
 const RegisterPage = () => {
@@ -41,7 +43,11 @@ const RegisterPage = () => {
             localStorage.setItem('token', token);
             console.log(token);
         } else {
-            console.log('error');
+            if (result.status === 400) {
+                ErrorToast('Неккоректные данные');
+            } else if (result.status >= 500) {
+                ErrorToast('Ошибка сервера');
+            }
         }
     };
 
@@ -118,6 +124,7 @@ const RegisterPage = () => {
                             {'Отправить'}
                         </Button>
                     </form>
+                    <ToastContainer />
                 </div>
             </section>
         </>
