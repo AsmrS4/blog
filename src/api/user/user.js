@@ -40,7 +40,7 @@ export const registerUser = async(data) => {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
+                
             },
             body: JSON.stringify({
                 ...data
@@ -48,6 +48,6 @@ export const registerUser = async(data) => {
         })
         return response;
     } catch (error) {
-        console.error('Response error: '+error);
+        console.error('Response error: '+ error);
     }
 }

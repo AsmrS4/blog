@@ -4,22 +4,23 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
     box-sizing: border-box;
     max-width: 468px;
     width: 100%;
-
     padding: 10px;
-
     border-radius: 8px;
     background-color: $white-color;
 }
 
 .register-form__title {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 500;
     color: $soft-black;
+
     margin: 16px 0;
+    span {
+        margin: 0;
+    }
 }
 
 .inputs-wrapper {
@@ -28,4 +29,8 @@
     align-items: center;
     width: 100%;
     padding: 32px 10px;
+}
+
+.link {
+    color: $soft-black;
 }
