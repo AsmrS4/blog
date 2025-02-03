@@ -27,7 +27,7 @@ const LoginPage = () => {
 
         if (result.ok) {
             let token = await result.json();
-            localStorage.setItem('token', token);
+            localStorage.setItem('token', token.token);
             console.log(token);
         } else {
             ErrorToast('Неверный логин или пароль');

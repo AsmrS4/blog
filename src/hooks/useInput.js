@@ -7,6 +7,6 @@ export const useInput = (initialValue, validations) => {
     const onChange = (e) => {
         setValue(e.target.value);
     };
-
-    return { value, onChange, ...valid };
+    
+    return { value, onChange, setValue,...valid };
 };

@@ -4,6 +4,7 @@ import './styles/index.scss';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import LoginPage from './pages/login/LoginPage';
 import RegisterPage from './pages/register/RegisterPage';
+import ProfilePage from './pages/profile/ProfilePage';
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Routes>
                     <Route path={'/login'} element={<LoginPage />} />
                     <Route path={'/registration'} element={<RegisterPage />} />
+                    <Route path={'/profile'} element={<ProfilePage />} />
                 </Routes>
             </BrowserRouter>
         </div>

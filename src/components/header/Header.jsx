@@ -10,8 +10,8 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
+
 import { logoutUser } from '../../api/user/user';
 
 function Header() {
@@ -21,10 +21,8 @@ function Header() {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        const result = await logoutUser();
-        if (result) {
-            localStorage.clear();
-        }
+        await logoutUser();
+        localStorage.clear();
         navigate('/login');
     };
 
@@ -45,7 +43,7 @@ function Header() {
         if (token) {
             setIsAuthorized(true);
         }
-    }, [isAuthorized]);
+    }, []);
 
     return (
         <AppBar position='static'>
@@ -98,7 +96,11 @@ function Header() {
                             <MenuItem onClick={handleCloseNavMenu}>
                                 <Typography sx={{ textAlign: 'center' }}>{'Главная'}</Typography>
                             </MenuItem>
-                            <MenuItem onClick={handleCloseNavMenu}>
+                            <MenuItem
+                                onClick={() => {
+                                    navigate('/profile');
+                                }}
+                            >
                                 <Typography sx={{ textAlign: 'center' }}>{'Профиль'}</Typography>
                             </MenuItem>
                         </Menu>
@@ -130,7 +132,9 @@ function Header() {
                         </Button>
                         {isAuthorized && (
                             <Button
-                                onClick={handleCloseNavMenu}
+                                onClick={() => {
+                                    navigate('/profile');
+                                }}
                                 sx={{ my: 2, fontSize: '14px', color: 'white', display: 'block' }}
                             >
                                 {'Профиль'}

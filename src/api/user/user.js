@@ -50,3 +50,42 @@ export const registerUser = async(data) => {
         console.error('Response error: '+ error);
     }
 }
+
+
+export const fetchUserProfile = async() => {
+    let token = localStorage.getItem('token');
+    
+    try {
+        const response = await fetch(`https://blog.kreosoft.space/api/account/profile`, {
+            method:'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        return response;
+    } catch (error) {
+        console.error('Response error: '+ error)        
+    }
+}
+
+export const editUserProfile = async(data) => {
+    let token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`https://blog.kreosoft.space/api/account/profile`, {
+            method:'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization':'Bearer ' + token
+            }, 
+            body:JSON.stringify({
+                ...data
+            })
+        })
+        return response;
+    } catch (error) {
+        console.error('Response error: ' + error)
+    }
+}

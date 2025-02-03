@@ -1,53 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import { Button, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { TextField, Button } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
-import { Link } from 'react-router';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
 import './index.scss';
-import { ErrorToast } from '../../utils/notifications';
 import { useInput } from '../../hooks/useInput';
-import { transformDateJson } from '../../utils/converter';
-import { registerUser } from '../../api/user/user';
+import { editUserProfile, fetchUserProfile } from '../../api/user/user';
+import { ErrorToast, SuccessToast, WarningToast } from '../../utils/notifications';
+import { ERROR_400, ERROR_401, ERROR_500 } from '../../utils/statusCodes';
+import { transformDate, transformDateJson } from '../../utils/converter';
 
-const RegisterPage = () => {
-    const email = useInput('', { isEmailValid: true, isEmpty: true });
-    const password = useInput('', { minLength: 6, isEmpty: true });
+const ProfilePage = () => {
+    const [userProfile, setUserProfile] = useState({
+        fullName: '',
+        birthDate: '',
+        email: '',
+        phoneNumber: '',
+        createTime: '',
+    });
+    const [isFormError, setIsError] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const email = useInput('', { isEmailValid: true });
     const fullName = useInput('', { isEmpty: true });
     const phone = useInput('', { isPhoneValid: true, isEmpty: true });
-    const [isFormError, setIsError] = useState(true);
     const [dateValue, setDate] = useState('');
-
-    useEffect(() => {
-        if (email.emailError || password.minLengthError || phone.phoneError || fullName.isEmpty) {
-            setIsError(true);
-        } else {
-            setIsError(false);
-        }
-    }, [email.emailError, password.minLengthError, phone.phoneError, fullName.isEmpty]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const result = await registerUser({
+        const result = await editUserProfile({
             fullName: fullName.value,
-            password: password.value,
-            email: email.value,
-            gender: 'Male',
             birthDate: dateValue,
+            gender: 'Male',
+            email: email.value,
             phoneNumber: phone.value,
         });
+
         if (result.ok) {
-            let token = await result.json();
-            localStorage.setItem('token', token.token);
-            console.log(token);
+            SuccessToast('Данные сохранены');
         } else {
-            if (result.status === 400) {
-                ErrorToast('Неккоректные данные');
-            } else if (result.status >= 500) {
-                ErrorToast('Ошибка сервера');
+            if (result.status === 401) {
+                WarningToast(ERROR_401);
+            } else if (result.status === 400) {
+                ErrorToast(ERROR_400);
+            } else {
+                ErrorToast(ERROR_500);
             }
         }
     };
@@ -58,14 +58,54 @@ const RegisterPage = () => {
         setDate(date);
     };
 
+    const getUserProfile = async () => {
+        setIsLoading(true);
+        const result = await fetchUserProfile();
+        if (result.ok) {
+            let data = await result.json();
+            setUserProfile((prev) => ({ ...prev, ...data }));
+        } else {
+            if (result.status === 401) {
+                WarningToast(ERROR_401);
+            } else {
+                ErrorToast(ERROR_500);
+            }
+        }
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        getUserProfile();
+    }, []);
+    useEffect(() => {
+        fullName.setValue(userProfile.fullName);
+        email.setValue(userProfile.email);
+        phone.setValue(userProfile.phoneNumber);
+        setDate(transformDateJson(userProfile.birthDate));
+    }, [isLoading]);
+
+    useEffect(() => {
+        if (email.emailError || phone.phoneError || fullName.isEmpty) {
+            setIsError(true);
+        } else {
+            setIsError(false);
+        }
+    }, [email.emailError, phone.phoneError, fullName.isEmpty]);
+
     return (
         <>
             <section className='content'>
                 <div className='container'>
-                    <form className='register-form' onSubmit={handleSubmit}>
-                        <h1 className='register-form__title'>
-                            <span>{'Регистрация'}</span>
-                        </h1>
+                    <form className='profile-form' onSubmit={handleSubmit}>
+                        <div className='title-wrapper'>
+                            <h1 className='profile-form__title'>
+                                <span>{userProfile.fullName}</span>
+                            </h1>
+                            <span>
+                                {'Аккаунт создан: '}
+                                {transformDate(userProfile.createTime)}
+                            </span>
+                        </div>
                         <div className='inputs-wrapper'>
                             <TextField
                                 label='ФИО'
@@ -100,29 +140,14 @@ const RegisterPage = () => {
                                 sx={{ width: '90%', marginBottom: '24px' }}
                                 error={email.emailError}
                             />
-                            <TextField
-                                label='Пароль'
-                                value={password.value}
-                                onChange={(e) => password.onChange(e)}
-                                type={'password'}
-                                sx={{ width: '90%', marginBottom: '24px' }}
-                                error={!password.isEmpty && password.minLengthError}
-                            />
-                            <div className='link'>
-                                {'Уже есть аккаунт? '}
-                                <Link to={'/login'} sx={{ cursor: 'pointer' }}>
-                                    {'Войти'}
-                                </Link>
-                            </div>
                         </div>
-
                         <Button
                             variant='contained'
                             sx={{ width: '90%', marginBottom: '20px' }}
                             type={'sumbit'}
                             disabled={isFormError}
                         >
-                            {'Отправить'}
+                            {'Сохранить'}
                         </Button>
                     </form>
                     <ToastContainer />
@@ -132,4 +157,4 @@ const RegisterPage = () => {
     );
 };
 
-export default RegisterPage;
+export default ProfilePage;
