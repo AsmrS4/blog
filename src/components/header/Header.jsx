@@ -10,24 +10,42 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuItem from '@mui/material/MenuItem';
-
-const pages = ['Главная', 'Профиль'];
+import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
+import { logoutUser } from '../../api/user/user';
 
 function Header() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [isAuthorized, setIsAuthorized] = React.useState(false);
 
-    const handleLogout = async () => {};
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        const result = await logoutUser();
+        if (result) {
+            localStorage.clear();
+        }
+        navigate('/login');
+    };
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
 
-    const handleLogin = async () => {};
+    const handleLogin = async () => {
+        navigate('/login');
+    };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
+
+    React.useEffect(() => {
+        let token = localStorage.getItem('token');
+        if (token) {
+            setIsAuthorized(true);
+        }
+    }, [isAuthorized]);
 
     return (
         <AppBar position='static'>
@@ -77,11 +95,12 @@ function Header() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                <Typography sx={{ textAlign: 'center' }}>{'Главная'}</Typography>
+                            </MenuItem>
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                <Typography sx={{ textAlign: 'center' }}>{'Профиль'}</Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
 
@@ -103,15 +122,20 @@ function Header() {
                         БЛОГ №123
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
+                        <Button
+                            onClick={handleCloseNavMenu}
+                            sx={{ my: 2, fontSize: '14px', color: 'white', display: 'block' }}
+                        >
+                            {'Главная'}
+                        </Button>
+                        {isAuthorized && (
                             <Button
-                                key={page}
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, fontSize: '14px', color: 'white', display: 'block' }}
                             >
-                                {page}
+                                {'Профиль'}
                             </Button>
-                        ))}
+                        )}
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                         {isAuthorized && <LogoutIcon />}
