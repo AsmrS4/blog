@@ -13,6 +13,9 @@ const Filter = () => {
     const [minReadingValue, setReadingMin] = useState(0);
     const [maxReadingValue, setReadingMax] = useState(100);
     const [tags, setTags] = useState([]);
+    const [size, setSize] = useState(5);
+    const [page, setPage] = useState(1);
+
     return (
         <>
             <div className='filter'>
