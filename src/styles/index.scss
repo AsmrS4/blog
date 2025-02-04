@@ -36,3 +36,16 @@ body {
     justify-content: space-between;
     width: 90%;
 }
+
+.row-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-sizing: border-box;
+    @media screen and (min-width: $extra-small) and (max-width: $medium) {
+        flex-direction: column;
+        align-items: start;
+    }
+}
