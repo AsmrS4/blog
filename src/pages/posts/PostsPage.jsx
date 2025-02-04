@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Filter from '../../components/filter/Filter';
 
+import './index.scss';
+
 const PostsPage = () => {
     const [posts, setPosts] = useState([]);
 

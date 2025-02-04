@@ -47,7 +47,7 @@ const Filter = () => {
                                 sx={{
                                     marginBottom: '20px',
                                     marginX: '5px',
-                                    maxWidth: '400px',
+                                    maxWidth: '700px',
                                     width: '100%',
                                 }}
                             >
@@ -78,9 +78,8 @@ const Filter = () => {
                                     }}
                                     type={'number'}
                                     sx={{
-                                        width: '140px',
-                                        maxWidth: '100%',
-                                        marginRight: '10px',
+                                        boxSizing: 'border-box',
+                                        width: '49%',
                                         marginBottom: '10px',
                                     }}
                                 />
@@ -91,17 +90,22 @@ const Filter = () => {
                                         setReadingMax(e.target.value);
                                     }}
                                     type={'number'}
-                                    sx={{ width: '140px', maxWidth: '100%', marginBottom: '10px' }}
+                                    sx={{
+                                        boxSizing: 'border-box',
+                                        width: '49%',
+                                        marginBottom: '10px',
+                                    }}
                                 />
                             </div>
                             <Button
                                 className='filter-button'
                                 variant='contained'
                                 sx={{
-                                    maxWidth: '200px',
+                                    boxSizing: 'border-box',
+                                    maxWidth: '700px',
                                     width: '100%',
                                     height: '50px',
-                                    margin: '5px 10px 20px 5px',
+                                    margin: '5px 5px 20px 5px',
                                 }}
                             >
                                 {'Применить'}
