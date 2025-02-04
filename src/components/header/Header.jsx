@@ -93,7 +93,11 @@ function Header() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            <MenuItem onClick={handleCloseNavMenu}>
+                            <MenuItem
+                                onClick={() => {
+                                    navigate('/');
+                                }}
+                            >
                                 <Typography sx={{ textAlign: 'center' }}>{'Главная'}</Typography>
                             </MenuItem>
                             <MenuItem
@@ -125,7 +129,9 @@ function Header() {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Button
-                            onClick={handleCloseNavMenu}
+                            onClick={() => {
+                                navigate('/');
+                            }}
                             sx={{ my: 2, fontSize: '14px', color: 'white', display: 'block' }}
                         >
                             {'Главная'}

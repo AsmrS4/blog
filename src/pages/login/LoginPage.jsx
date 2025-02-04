@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import { useInput } from '../../hooks/useInput';
 import './index.scss';
@@ -13,6 +13,7 @@ const LoginPage = () => {
     const email = useInput('', { isEmailValid: true });
     const password = useInput('', { minLength: 6 });
     const [isFormError, setIsError] = useState(true);
+    const navigate = useNavigate();
     useEffect(() => {
         if (email.emailError || password.minLengthError) {
             setIsError(true);
@@ -28,7 +29,7 @@ const LoginPage = () => {
         if (result.ok) {
             let token = await result.json();
             localStorage.setItem('token', token.token);
-            console.log(token);
+            navigate('/');
         } else {
             ErrorToast('Неверный логин или пароль');
         }
