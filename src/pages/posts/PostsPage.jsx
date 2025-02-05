@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 import Filter from '../../components/filter/Filter';
 import Post from '../../components/post/Post';
-import { fetchPosts } from '../../store/actions/posts';
+
 import { getPosts } from '../../api/post/post';
 import { ErrorToast } from '../../utils/notifications';
+import { setPagination } from '../../store/actions/pagination';
 
 const PostsPage = () => {
     const dispatch = useDispatch();
@@ -34,14 +35,16 @@ const PostsPage = () => {
                 if (result.ok) {
                     let data = await result.json();
                     setCurrentPage((prev) => prev + 1);
-
                     setPosts(posts.concat(data.posts));
+                    dispatch(setPagination(data.pagination));
                 } else {
                     ErrorToast('Oops...');
                 }
                 setLoading(false);
             })();
         }
+
+        console.log(pagination);
     }, [isLoading]);
 
     useEffect(() => {
@@ -57,9 +60,9 @@ const PostsPage = () => {
                 <div className='container'>
                     <Filter />
                     <div className='posts-wrapper'>
-                        <Post />
-                        <Post />
-                        <Post />
+                        {posts.map((post) => {
+                            return <Post key={post.id} {...post} />;
+                        })}
                     </div>
                 </div>
             </section>
