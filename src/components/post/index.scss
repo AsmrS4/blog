@@ -4,7 +4,7 @@
     box-sizing: border-box;
     width: 100%;
     height: auto;
-    padding: 10px;
+
     margin-bottom: 10px;
     background-color: $white-color;
     border-radius: 6px;
@@ -23,7 +23,7 @@
         width: 100%;
         .post__post-title {
             box-sizing: border-box;
-            padding: 10px;
+            padding: 20px;
             width: 100%;
             height: auto;
             border-bottom: 1.5px solid #efefef;
@@ -54,9 +54,9 @@
             box-sizing: border-box;
             flex-direction: column;
             align-items: center;
-            margin-top: 20px;
+
             width: 100%;
-            padding: 10px 10px 0 10px;
+            padding: 0;
             height: auto;
 
             .post__post-image-wrapper {
@@ -70,7 +70,7 @@
                 align-items: center;
                 justify-content: center;
                 overflow: hidden;
-                border-radius: 6px;
+
                 .post__post-image {
                     height: auto;
                     width: 100%;
@@ -78,6 +78,7 @@
             }
             .post__post-description {
                 width: 100%;
+                padding: 0 20px;
                 box-sizing: border-box;
                 min-height: 200px;
                 height: auto;
@@ -89,6 +90,7 @@
                 align-items: start;
                 width: 100%;
                 height: auto;
+                padding: 10px;
                 .post__tags-wrapper {
                     width: 100%;
                     height: auto;
@@ -99,6 +101,7 @@
                 .post__post-reading-time {
                     width: 100%;
                     height: 30px;
+                    padding: 0 20px;
                     color: $hint-color;
                 }
             }
@@ -111,7 +114,7 @@
             justify-content: space-between;
             width: 100%;
             height: auto;
-            padding: 8px 0;
+            padding: 8px 10px;
             border-top: 1.5px solid #efefef;
             .post__comment-count {
                 display: flex;
