@@ -1,7 +1,10 @@
 import React from 'react';
-import { transformDate, transformDateJson } from '../../utils/converter';
 
+import ChatIcon from '@mui/icons-material/Chat';
+import { transformDate } from '../../utils/converter';
 import './index.scss';
+import { FavoriteBorder, Favorite } from '@mui/icons-material';
+import { Checkbox } from '@mui/material';
 
 const Post = ({
     id = '',
@@ -30,7 +33,9 @@ const Post = ({
                     </div>
                     <div className='post__post-content'>
                         <div className='post__post-image-wrapper'>
-                            <div className='post__post-image'></div>
+                            {image && (
+                                <img className='post__post-image' src={image} alt={'Photo'}></img>
+                            )}
                         </div>
                         <div className='post__post-description'>{description}</div>
                         <div className='post__post-info'>
@@ -41,8 +46,19 @@ const Post = ({
                         </div>
                     </div>
                     <div className='post__post-footer'>
-                        <div className='post__comment-count'>{commentsCount}</div>
-                        <div className='post__like-count'>{likes}</div>
+                        <div className='post__comment-count'>
+                            <ChatIcon sx={{ marginRight: '5px', color: '#336caf' }} />
+
+                            {Math.max(commentsCount, 0)}
+                        </div>
+                        <div className='post__like-count'>
+                            {likes}
+                            <Checkbox
+                                sx={{ margin: '0px', padding: '5px' }}
+                                icon={<FavoriteBorder />}
+                                checkedIcon={<Favorite sx={{ color: 'red' }} />}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
