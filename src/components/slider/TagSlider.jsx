@@ -45,7 +45,7 @@ const PageCountSlider = styled(Slider)({
     },
 });
 
-export default function TagSlider() {
+export default function TagSlider({ value = 5, onChange }) {
     return (
         <Box
             sx={{
@@ -60,9 +60,10 @@ export default function TagSlider() {
             <PageCountSlider
                 valueLabelDisplay='auto'
                 aria-label='slider'
-                defaultValue={10}
+                value={value}
                 min={5}
                 max={50}
+                onChange={onChange}
             />
         </Box>
     );

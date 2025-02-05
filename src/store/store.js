@@ -5,6 +5,6 @@ import paginationReducer from "./reducers/paginationReducer"
 export const appStore = configureStore({
     reducer: {
         filters: filterReducer,
-        pagination: paginationReducer
+        pagination: paginationReducer,
     }
 })

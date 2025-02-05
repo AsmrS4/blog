@@ -4,12 +4,11 @@ const filterSlice = createSlice({
     name:'filters',
     initialState: {
         filters: {
-            author: null,
+            author: '',
             tags: [],
-            min: null,
-            max: null,
-            sorting: null,
-            page: 1,
+            min: '',
+            max: '',
+            sorting: '',
             size: 5
         }
     }, 

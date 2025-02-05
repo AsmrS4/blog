@@ -1,20 +1,54 @@
 import { Button, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TagSelect from '../select/TagSelect';
 import TagSlider from '../slider/TagSlider';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 import './index.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilterParams } from '../../store/actions/filter';
 
 const Filter = () => {
-    const [authorName, setName] = useState('');
-    const [sorting, setSorting] = useState('');
-    const [selectedTags, setSelectedTags] = useState([]);
-    const [minReadingValue, setReadingMin] = useState(0);
-    const [maxReadingValue, setReadingMax] = useState(100);
+    const { filters } = useSelector((state) => state.filters);
+
+    const [authorName, setName] = useState(filters.author);
+    const [sorting, setSorting] = useState(filters.sorting);
+    const [selectedTags, setSelectedTags] = useState(filters.tags);
+    const [minReadingValue, setReadingMin] = useState(filters.min);
+    const [maxReadingValue, setReadingMax] = useState(filters.max);
     const [tags, setTags] = useState([]);
-    const [size, setSize] = useState(5);
-    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(filters.size);
+
+    const dispatch = useDispatch();
+
+    const handleClick = () => {
+        dispatch(
+            setFilterParams({
+                author: authorName,
+                tags: [],
+                min: minReadingValue,
+                max: maxReadingValue,
+                sorting: sorting,
+                size: size,
+            }),
+        );
+        console.log({
+            ...filters,
+        });
+    };
+
+    useEffect(() => {
+        dispatch(
+            setFilterParams({
+                author: authorName,
+                tags: [],
+                min: minReadingValue,
+                max: maxReadingValue,
+                sorting: sorting,
+                size: size,
+            }),
+        );
+    }, [authorName, minReadingValue, maxReadingValue, sorting, size]);
 
     return (
         <>
@@ -69,7 +103,12 @@ const Filter = () => {
                                     <MenuItem value={30}>Thirty</MenuItem>
                                 </Select>
                             </FormControl>
-                            <TagSlider />
+                            <TagSlider
+                                value={size}
+                                onChange={(e) => {
+                                    setSize(e.target.value);
+                                }}
+                            />
                         </div>
                         <div className='row-wrapper'>
                             <div className='reading-time-wrapper'>
@@ -110,6 +149,7 @@ const Filter = () => {
                                     height: '50px',
                                     margin: '5px 5px 20px 5px',
                                 }}
+                                onClick={handleClick}
                             >
                                 {'Применить'}
                             </Button>
