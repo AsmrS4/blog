@@ -47,14 +47,16 @@ const Post = ({
                     </div>
                     <div className='post__post-footer'>
                         <div className='post__comment-count'>
-                            <ChatIcon sx={{ marginRight: '5px', color: '#336caf' }} />
+                            <ChatIcon
+                                sx={{ marginRight: '5px', color: '#336caf', cursor: 'pointer' }}
+                            />
 
                             {Math.max(commentsCount, 0)}
                         </div>
                         <div className='post__like-count'>
                             {likes}
                             <Checkbox
-                                sx={{ margin: '0px', padding: '5px' }}
+                                sx={{ margin: '0px', padding: '5px', cursor: 'pointer' }}
                                 icon={<FavoriteBorder />}
                                 checkedIcon={<Favorite sx={{ color: 'red' }} />}
                             />

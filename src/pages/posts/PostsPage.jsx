@@ -8,11 +8,12 @@ import Post from '../../components/post/Post';
 import { getPosts } from '../../api/post/post';
 import { ErrorToast } from '../../utils/notifications';
 import { setPagination } from '../../store/actions/pagination';
+import { getQueryString } from '../../utils/converter';
 
 const PostsPage = () => {
     const dispatch = useDispatch();
     const { pagination } = useSelector((state) => state.pagination);
-    const { filters } = useSelector((state) => state.filters); //TODO: сделать конвертацию в строку
+    const { filters } = useSelector((state) => state.filters);
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(pagination.current);
     const [isLoading, setLoading] = useState(true);
@@ -29,9 +30,27 @@ const PostsPage = () => {
     };
 
     useEffect(() => {
+        setPosts([]);
+        setCurrentPage(1);
+        (async () => {
+            const query = getQueryString(filters);
+            const result = await getPosts(query);
+            if (result.ok) {
+                let data = await result.json();
+                setCurrentPage((prev) => prev + 1);
+                setPosts(data.posts);
+                dispatch(setPagination(data.pagination));
+            } else {
+                ErrorToast('Oops...');
+            }
+        })();
+    }, [filters]);
+
+    useEffect(() => {
         if (isLoading) {
             (async () => {
-                const result = await getPosts({ size: pagination.size, current: currentPage }); //TODO: передать строку запроса
+                const query = getQueryString(filters, currentPage);
+                const result = await getPosts(query);
                 if (result.ok) {
                     let data = await result.json();
                     setCurrentPage((prev) => prev + 1);
@@ -43,12 +62,9 @@ const PostsPage = () => {
                 setLoading(false);
             })();
         }
-
-        console.log(pagination);
     }, [isLoading]);
 
     useEffect(() => {
-        console.log(posts);
         document.addEventListener('scroll', handleScroll);
         return () => {
             document.removeEventListener('scroll', handleScroll);
@@ -69,6 +85,5 @@ const PostsPage = () => {
         </>
     );
 };
-//TODO: подумать над динамической пагинацией//
 
 export default PostsPage;

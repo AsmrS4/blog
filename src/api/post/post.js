@@ -1,7 +1,6 @@
-export const getPosts = async(params)=> {
-    const queryParams = `page=${params.current}&size=${params.size}`
+export const getPosts = async(query)=> {
     try {
-        const response = await fetch('https://blog.kreosoft.space/api/post?'+queryParams, {
+        const response = await fetch('https://blog.kreosoft.space/api/post?'+query, {
             method: 'GET',
             headers: {
                 'Accept':'application/json'

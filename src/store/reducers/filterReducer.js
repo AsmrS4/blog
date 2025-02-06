@@ -9,7 +9,8 @@ const filterSlice = createSlice({
             min: '',
             max: '',
             sorting: '',
-            size: 5
+            size: 5,
+            page: 1
         }
     }, 
     reducers: {

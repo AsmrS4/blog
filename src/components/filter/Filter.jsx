@@ -16,7 +16,7 @@ const Filter = () => {
     const [selectedTags, setSelectedTags] = useState(filters.tags);
     const [minReadingValue, setReadingMin] = useState(filters.min);
     const [maxReadingValue, setReadingMax] = useState(filters.max);
-    const [tags, setTags] = useState([]);
+    const [tags, setTags] = useState([]); //TODO: доделать выбор тэгов
     const [size, setSize] = useState(filters.size);
 
     const dispatch = useDispatch();
@@ -30,25 +30,10 @@ const Filter = () => {
                 max: maxReadingValue,
                 sorting: sorting,
                 size: size,
+                page: 1,
             }),
         );
-        console.log({
-            ...filters,
-        });
     };
-
-    useEffect(() => {
-        dispatch(
-            setFilterParams({
-                author: authorName,
-                tags: [],
-                min: minReadingValue,
-                max: maxReadingValue,
-                sorting: sorting,
-                size: size,
-            }),
-        );
-    }, [authorName, minReadingValue, maxReadingValue, sorting, size]);
 
     return (
         <>
@@ -98,9 +83,14 @@ const Filter = () => {
                                         setSorting(e.target.value);
                                     }}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value={'CreateDesc'}>{'Новые'}</MenuItem>
+                                    <MenuItem value={'CreateAsc'}>{'Старые'}</MenuItem>
+                                    <MenuItem value={'LikeAsc'}>
+                                        {'По количеству лайков(по возраст.)'}
+                                    </MenuItem>
+                                    <MenuItem value={'LikeDesc'}>
+                                        {'По количеству лайков(по убыв.)'}
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                             <TagSlider
