@@ -70,6 +70,7 @@ const PostsPage = () => {
             document.removeEventListener('scroll', handleScroll);
         };
     }, [currentPage]);
+    console.log(posts);
     return (
         <>
             <section className='content'>

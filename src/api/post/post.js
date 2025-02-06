@@ -1,9 +1,11 @@
 export const getPosts = async(query)=> {
+    let token = localStorage.getItem('token');
     try {
         const response = await fetch('https://blog.kreosoft.space/api/post?'+query, {
             method: 'GET',
             headers: {
-                'Accept':'application/json'
+                'Accept':'application/json',
+                'Authorization': 'Bearer ' + token
             }
         } );
         return response;
@@ -15,7 +17,7 @@ export const getPosts = async(query)=> {
 export const addLike = async(postId) => {
     let token = localStorage.getItem('token');
     try {
-        const resposne = await fetch(`https://blog.kreosoft.space/api/post${postId}/like`, {
+        const resposne = await fetch(`https://blog.kreosoft.space/api/post/${postId}/like`, {
             method: 'POST',
             headers: {
                 'Accept':'application/json',
@@ -31,7 +33,7 @@ export const addLike = async(postId) => {
 export const removeLike = async(postId) => {
     let token = localStorage.getItem('token');
     try {
-        const resposne = await fetch(`https://blog.kreosoft.space/api/post${postId}/like`, {
+        const resposne = await fetch(`https://blog.kreosoft.space/api/post/${postId}/like`, {
             method: 'DELETE',
             headers: {
                 'Accept':'application/json',

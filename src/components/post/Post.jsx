@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import ChatIcon from '@mui/icons-material/Chat';
 import { transformDate } from '../../utils/converter';
 import './index.scss';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { Checkbox } from '@mui/material';
+import { addLike, removeLike } from '../../api/post/post';
 
 const Post = ({
     id = '',
@@ -20,6 +21,24 @@ const Post = ({
     commentsCount = 0,
     tags = [],
 }) => {
+    const [isLiked, setLiked] = useState(hasLike);
+    const [likesCount, setCount] = useState(likes);
+    const handleLikeClick = async () => {
+        if (isLiked) {
+            const response = await removeLike(id);
+            if (response.ok) {
+                setCount((prev) => prev - 1);
+                setLiked(false);
+            }
+        }
+        if (!isLiked) {
+            const resposne = await addLike(id);
+            if (resposne.ok) {
+                setCount((prev) => prev + 1);
+                setLiked(true);
+            }
+        }
+    };
     return (
         <>
             <div className='post-container'>
@@ -54,11 +73,13 @@ const Post = ({
                             {Math.max(commentsCount, 0)}
                         </div>
                         <div className='post__like-count'>
-                            {likes}
+                            {likesCount}
                             <Checkbox
                                 sx={{ margin: '0px', padding: '5px', cursor: 'pointer' }}
                                 icon={<FavoriteBorder />}
                                 checkedIcon={<Favorite sx={{ color: 'red' }} />}
+                                onClick={handleLikeClick}
+                                checked={isLiked}
                             />
                         </div>
                     </div>
