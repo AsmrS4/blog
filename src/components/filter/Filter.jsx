@@ -7,6 +7,7 @@ import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import './index.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilterParams } from '../../store/actions/filter';
+import { fetchTags } from '../../api/post/tags';
 
 const Filter = () => {
     const { filters } = useSelector((state) => state.filters);
@@ -25,7 +26,7 @@ const Filter = () => {
         dispatch(
             setFilterParams({
                 author: authorName,
-                tags: [],
+                tags: selectedTags,
                 min: minReadingValue,
                 max: maxReadingValue,
                 sorting: sorting,
@@ -34,6 +35,18 @@ const Filter = () => {
             }),
         );
     };
+
+    useEffect(() => {
+        (async () => {
+            const result = await fetchTags();
+            if (result.ok) {
+                const tags = await result.json();
+                setTags(tags);
+            } else {
+                setTags([]);
+            }
+        })();
+    }, []);
 
     return (
         <>

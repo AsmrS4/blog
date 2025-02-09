@@ -58,7 +58,11 @@ const Post = ({
                         </div>
                         <div className='post__post-description'>{description}</div>
                         <div className='post__post-info'>
-                            <div className='post__tags-wrapper'></div>
+                            <div className='post__tags-wrapper'>
+                                {tags.map((tag) => {
+                                    return `#${tag.name} `;
+                                })}
+                            </div>
                             <span className='post__post-reading-time'>
                                 {`Время чтения: ${Math.max(readingTime, 0)} мин.`}
                             </span>

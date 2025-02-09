@@ -14,6 +14,26 @@ export const getPosts = async(query)=> {
     }
 }
 
+export const createPost = async(data) => {
+    let token = localStorage.getItem('token');
+    try {
+        const resposne = await fetch('https://blog.kreosoft.space/api/post', {
+            method: 'POST',
+            headers: {
+                'Accept':'text/plain',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }, 
+            body: JSON.stringify({
+                ...data
+            })
+        } );
+        return resposne
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 export const addLike = async(postId) => {
     let token = localStorage.getItem('token');
     try {
