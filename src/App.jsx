@@ -6,6 +6,7 @@ import LoginPage from './pages/login/LoginPage';
 import RegisterPage from './pages/register/RegisterPage';
 import ProfilePage from './pages/profile/ProfilePage';
 import PostsPage from './pages/posts/PostsPage';
+import PostPageCreate from './pages/posts/PostPageCreate';
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                     <Route path={'/registration'} element={<RegisterPage />} />
                     <Route path={'/profile'} element={<ProfilePage />} />
                     <Route path={'/'} element={<PostsPage />} />
+                    <Route path={'/post/create'} element={<PostPageCreate />} />
                 </Routes>
             </BrowserRouter>
         </div>

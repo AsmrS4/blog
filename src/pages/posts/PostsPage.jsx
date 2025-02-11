@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Fab } from '@mui/material';
+import { Create } from '@mui/icons-material';
 
 import './index.scss';
 import Filter from '../../components/filter/Filter';
@@ -9,9 +11,11 @@ import { getPosts } from '../../api/post/post';
 import { ErrorToast } from '../../utils/notifications';
 import { setPagination } from '../../store/actions/pagination';
 import { getQueryString } from '../../utils/converter';
+import { useNavigate } from 'react-router';
 
 const PostsPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { pagination } = useSelector((state) => state.pagination);
     const { filters } = useSelector((state) => state.filters);
     const [posts, setPosts] = useState([]);
@@ -29,6 +33,10 @@ const PostsPage = () => {
         }
     };
 
+    const handleClick = async () => {
+        navigate('/post/create');
+    };
+
     useEffect(() => {
         setPosts([]);
         setCurrentPage(1);
@@ -37,13 +45,14 @@ const PostsPage = () => {
             const result = await getPosts(query);
             if (result.ok) {
                 let data = await result.json();
-                setCurrentPage((prev) => prev + 1);
+                setCurrentPage((prev) => ++prev);
                 setPosts(data.posts);
                 dispatch(setPagination(data.pagination));
             } else {
                 ErrorToast('Oops...');
             }
         })();
+        console.log(filters);
     }, [filters]);
 
     useEffect(() => {
@@ -53,7 +62,7 @@ const PostsPage = () => {
                 const result = await getPosts(query);
                 if (result.ok) {
                     let data = await result.json();
-                    setCurrentPage((prev) => prev + 1);
+                    setCurrentPage((prev) => ++prev);
                     setPosts(posts.concat(data.posts));
                     dispatch(setPagination(data.pagination));
                 } else {
@@ -70,7 +79,7 @@ const PostsPage = () => {
             document.removeEventListener('scroll', handleScroll);
         };
     }, [currentPage]);
-    console.log(posts);
+
     return (
         <>
             <section className='content'>
@@ -81,6 +90,16 @@ const PostsPage = () => {
                             return <Post key={post.id} {...post} />;
                         })}
                     </div>
+                </div>
+                <div className='create-new-post'>
+                    <Fab
+                        onClick={handleClick}
+                        sx={{ height: '64px', width: '64px' }}
+                        color='primary'
+                        aria-label='add'
+                    >
+                        <Create sx={{ width: '24px', height: '24px' }} />
+                    </Fab>
                 </div>
             </section>
         </>

@@ -17,7 +17,7 @@ const Filter = () => {
     const [selectedTags, setSelectedTags] = useState(filters.tags);
     const [minReadingValue, setReadingMin] = useState(filters.min);
     const [maxReadingValue, setReadingMax] = useState(filters.max);
-    const [tags, setTags] = useState([]); //TODO: доделать выбор тэгов
+    const [tags, setTags] = useState([]);
     const [size, setSize] = useState(filters.size);
 
     const dispatch = useDispatch();
@@ -111,6 +111,7 @@ const Filter = () => {
                                 onChange={(e) => {
                                     setSize(e.target.value);
                                 }}
+                                width={'700px'}
                             />
                         </div>
                         <div className='row-wrapper'>

@@ -45,18 +45,23 @@ const PageCountSlider = styled(Slider)({
     },
 });
 
-export default function TagSlider({ value = 5, onChange }) {
+export default function TagSlider({
+    label = 'Количество постов на странице',
+    value = 5,
+    onChange,
+    maxWidth,
+}) {
     return (
         <Box
             sx={{
                 width: '100%',
-                maxWidth: '700px',
+                maxWidth: maxWidth,
                 marginBottom: '20px',
                 paddingX: '10px',
                 boxSizing: 'border-box',
             }}
         >
-            <Typography gutterBottom>Количество постов на странице</Typography>
+            <Typography gutterBottom>{label}</Typography>
             <PageCountSlider
                 valueLabelDisplay='auto'
                 aria-label='slider'

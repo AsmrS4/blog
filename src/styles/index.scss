@@ -17,6 +17,17 @@ body {
     width: 100%;
     min-height: 100vh;
     height: auto;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.create-new-post {
+    position: fixed;
+    z-index: 1;
+    bottom: 16px;
+    right: 16px;
+
+    box-sizing: border-box;
 }
 
 .container {
@@ -48,5 +59,23 @@ body {
     @media screen and (min-width: $extra-small) and (max-width: $medium) {
         flex-direction: column;
         align-items: start;
+    }
+}
+
+.row-wrapper-post {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-sizing: border-box;
+    @media screen and (min-width: $extra-small) and (max-width: $medium) {
+        flex-direction: column;
+        align-items: start;
+        .ml-0 {
+            margin-left: 0;
+            width: 100%;
+            max-width: 700px;
+        }
     }
 }

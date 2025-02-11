@@ -20,8 +20,8 @@ export const transformDate = (date) => {
 export const getQueryString = (params, currentPage) => {
     let query = '';
     if(params.tags && params.tags.length > 0) {
-        for(let tag in params.tags) {
-            query+=`tags=${tag}&`;
+        for(let i=0; i<params.tags.length;i++) {
+            query+=`tags=${params.tags[0].id}&`;
         }
     }
     if(params.author) {
