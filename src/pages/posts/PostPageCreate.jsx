@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { TextField, Button } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
 
 import './index.scss';
+import { delay } from '../../utils/delay';
 import { useInput } from '../../hooks/useInput';
 import TagSelect from '../../components/select/TagSelect';
-import TagSlider from '../../components/slider/TagSlider';
 import { fetchTags } from '../../api/post/tags';
 import { createPost } from '../../api/post/post';
 import { ErrorToast, SuccessToast, WarningToast } from '../../utils/notifications';
 import { ERROR_400, ERROR_401, ERROR_500 } from '../../utils/statusCodes';
-import { ToastContainer } from 'react-toastify';
 
 const PostPageCreate = () => {
     const title = useInput('', { isEmpty: true });
@@ -20,13 +20,17 @@ const PostPageCreate = () => {
     const [imageURL, setImage] = useState('');
     const [tags, setTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         let postTags = [];
+        setIsLoading(true);
+        await delay(500);
         for (let i = 0; i < selectedTags.length; i++) {
-            postTags.push(selectedTags[0].id);
+            postTags.push(selectedTags[i].id);
         }
+
         const result = await createPost({
             title: title.value,
             description: text.value,
@@ -37,6 +41,11 @@ const PostPageCreate = () => {
 
         if (result.ok) {
             SuccessToast('Пост успешно создан');
+            title.setValue('');
+            text.setValue('');
+            readingTime.setValue(0);
+            setImage('');
+            setSelectedTags([]);
         } else {
             if (result.status === 401) {
                 WarningToast(ERROR_401);
@@ -46,6 +55,7 @@ const PostPageCreate = () => {
                 ErrorToast(ERROR_500);
             }
         }
+        setIsLoading(false);
     };
     useEffect(() => {
         if (title.isEmpty || text.isEmpty || selectedTags.isEmpty || readingTime.isEmpty) {
@@ -125,8 +135,10 @@ const PostPageCreate = () => {
                         </div>
                         <Button
                             variant='contained'
-                            sx={{ width: '90%', marginBottom: '20px' }}
+                            sx={{ width: '90%', marginBottom: '10px', height: '48px' }}
                             type={'sumbit'}
+                            loading={isLoading}
+                            loadingIndicator={'Отправка...'}
                             disabled={isFormError}
                         >
                             {'Создать пост'}

@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router';
 const PostsPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
     const { pagination } = useSelector((state) => state.pagination);
     const { filters } = useSelector((state) => state.filters);
     const [posts, setPosts] = useState([]);
@@ -91,16 +92,18 @@ const PostsPage = () => {
                         })}
                     </div>
                 </div>
-                <div className='create-new-post'>
-                    <Fab
-                        onClick={handleClick}
-                        sx={{ height: '64px', width: '64px' }}
-                        color='primary'
-                        aria-label='add'
-                    >
-                        <Create sx={{ width: '24px', height: '24px' }} />
-                    </Fab>
-                </div>
+                {token && (
+                    <div className='create-new-post'>
+                        <Fab
+                            onClick={handleClick}
+                            sx={{ height: '64px', width: '64px' }}
+                            color='primary'
+                            aria-label='add'
+                        >
+                            <Create sx={{ width: '24px', height: '24px' }} />
+                        </Fab>
+                    </div>
+                )}
             </section>
         </>
     );
