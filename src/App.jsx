@@ -12,7 +12,6 @@ function App() {
     return (
         <div className='app-wrapper'>
             <BrowserRouter>
-                <Header />
                 <Routes>
                     <Route path={'/login'} element={<LoginPage />} />
                     <Route path={'/registration'} element={<RegisterPage />} />

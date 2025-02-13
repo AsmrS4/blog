@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-
-import ChatIcon from '@mui/icons-material/Chat';
-import { transformDate } from '../../utils/converter';
-import './index.scss';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { Checkbox } from '@mui/material';
+import ChatIcon from '@mui/icons-material/Chat';
+
+import './index.scss';
 import { addLike, removeLike } from '../../api/post/post';
+
+import { ErrorToast } from '../../utils/notifications';
+import { transformDate } from '../../utils/converter';
 
 const Post = ({
     id = '',
@@ -36,6 +38,12 @@ const Post = ({
             if (resposne.ok) {
                 setCount((prev) => prev + 1);
                 setLiked(true);
+            } else {
+                if (resposne.status === 401) {
+                    ErrorToast('Вы не авторизованы');
+                } else {
+                    ErrorToast(ERROR_500);
+                }
             }
         }
     };

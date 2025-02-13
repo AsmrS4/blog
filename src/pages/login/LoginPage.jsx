@@ -2,17 +2,22 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
 import { Link, useNavigate } from 'react-router';
+import { ToastContainer } from 'react-toastify';
+
+import './index.scss';
+import Header from '../../components/header/Header';
+
+import { loginUser } from '../../api/user/user';
 
 import { useInput } from '../../hooks/useInput';
-import './index.scss';
-import { loginUser } from '../../api/user/user';
 import { ErrorToast } from '../../utils/notifications';
-import { ToastContainer } from 'react-toastify';
+import { delay } from '../../utils/delay';
 
 const LoginPage = () => {
     const email = useInput('', { isEmailValid: true });
     const password = useInput('', { minLength: 6 });
     const [isFormError, setIsError] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
         if (email.emailError || password.minLengthError) {
@@ -24,6 +29,8 @@ const LoginPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+        await delay(500);
         const result = await loginUser({ email: email.value, password: password.value });
 
         if (result.ok) {
@@ -33,10 +40,12 @@ const LoginPage = () => {
         } else {
             ErrorToast('Неверный логин или пароль');
         }
+        setIsLoading(false);
     };
 
     return (
         <>
+            <Header />
             <section className='content'>
                 <div className='container'>
                     <form className='login-form' onSubmit={handleSubmit}>
@@ -71,6 +80,8 @@ const LoginPage = () => {
                             variant='contained'
                             sx={{ width: '90%', marginBottom: '20px' }}
                             type={'sumbit'}
+                            loading={isLoading}
+                            loadingIndicator={'Отправка...'}
                             disabled={isFormError}
                         >
                             {'Войти'}

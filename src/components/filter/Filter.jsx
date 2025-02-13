@@ -1,11 +1,11 @@
-import { Button, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import TagSelect from '../select/TagSelect';
-import TagSlider from '../slider/TagSlider';
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+
+import { Button, FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './index.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import TagSelect from '../select/TagSelect';
+import TagSlider from '../slider/TagSlider';
 import { setFilterParams } from '../../store/actions/filter';
 import { fetchTags } from '../../api/post/tags';
 

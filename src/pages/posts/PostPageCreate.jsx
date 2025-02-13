@@ -3,13 +3,16 @@ import { TextField, Button } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 
 import './index.scss';
-import { delay } from '../../utils/delay';
-import { useInput } from '../../hooks/useInput';
+import Header from '../../components/header/Header';
 import TagSelect from '../../components/select/TagSelect';
+
 import { fetchTags } from '../../api/post/tags';
 import { createPost } from '../../api/post/post';
+
+import { useInput } from '../../hooks/useInput';
 import { ErrorToast, SuccessToast, WarningToast } from '../../utils/notifications';
 import { ERROR_400, ERROR_401, ERROR_500 } from '../../utils/statusCodes';
+import { delay } from '../../utils/delay';
 
 const PostPageCreate = () => {
     const title = useInput('', { isEmpty: true });
@@ -78,6 +81,7 @@ const PostPageCreate = () => {
     }, []);
     return (
         <>
+            <Header />
             <section className='content'>
                 <div className='container'>
                     <form className='create-post-form' onSubmit={handleSubmit}>

@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router';
 import dayjs from 'dayjs';
 import { Button, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker, LocalizationProvider, AdapterDayjs } from '@mui/x-date-pickers';
 import { ToastContainer } from 'react-toastify';
-import { Link } from 'react-router';
 
 import './index.scss';
-import { ErrorToast } from '../../utils/notifications';
-import { useInput } from '../../hooks/useInput';
-import { transformDateJson } from '../../utils/converter';
+import Header from '../../components/header/Header';
+
 import { registerUser } from '../../api/user/user';
+
+import { useInput } from '../../hooks/useInput';
+import { ErrorToast, SuccessToast } from '../../utils/notifications';
+import { transformDateJson } from '../../utils/converter';
+import { delay } from '../../utils/delay';
 
 const RegisterPage = () => {
     const email = useInput('', { isEmailValid: true, isEmpty: true });
@@ -18,6 +21,7 @@ const RegisterPage = () => {
     const fullName = useInput('', { isEmpty: true });
     const phone = useInput('', { isPhoneValid: true, isEmpty: true });
     const [isFormError, setIsError] = useState(true);
+    const [isLoading, setLoading] = useState(false);
     const [dateValue, setDate] = useState('');
 
     useEffect(() => {
@@ -30,7 +34,8 @@ const RegisterPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
+        await delay(500);
         const result = await registerUser({
             fullName: fullName.value,
             password: password.value,
@@ -42,7 +47,7 @@ const RegisterPage = () => {
         if (result.ok) {
             let token = await result.json();
             localStorage.setItem('token', token.token);
-            console.log(token);
+            SuccessToast('Аккаунт успешно создан');
         } else {
             if (result.status === 400) {
                 ErrorToast('Неккоректные данные');
@@ -50,6 +55,7 @@ const RegisterPage = () => {
                 ErrorToast('Ошибка сервера');
             }
         }
+        setLoading(false);
     };
 
     const handleDate = (e) => {
@@ -60,6 +66,7 @@ const RegisterPage = () => {
 
     return (
         <>
+            <Header />
             <section className='content'>
                 <div className='container'>
                     <form className='register-form' onSubmit={handleSubmit}>
@@ -120,6 +127,8 @@ const RegisterPage = () => {
                             variant='contained'
                             sx={{ width: '90%', marginBottom: '20px' }}
                             type={'sumbit'}
+                            loading={isLoading}
+                            loadingIndicator={'Отправка...'}
                             disabled={isFormError}
                         >
                             {'Отправить'}

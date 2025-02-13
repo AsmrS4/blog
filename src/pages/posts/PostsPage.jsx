@@ -2,16 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Fab } from '@mui/material';
 import { Create } from '@mui/icons-material';
+import { ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 import './index.scss';
 import Filter from '../../components/filter/Filter';
+import Loader from '../../components/loader/Loader';
 import Post from '../../components/post/Post';
+import Header from '../../components/header/Header';
 
 import { getPosts } from '../../api/post/post';
-import { ErrorToast } from '../../utils/notifications';
+
 import { setPagination } from '../../store/actions/pagination';
+import { ErrorToast } from '../../utils/notifications';
 import { getQueryString } from '../../utils/converter';
-import { useNavigate } from 'react-router';
+import { delay } from '../../utils/delay';
 
 const PostsPage = () => {
     const dispatch = useDispatch();
@@ -22,6 +27,7 @@ const PostsPage = () => {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(pagination.current);
     const [isLoading, setLoading] = useState(true);
+    const [isPageLoading, setPageLoading] = useState(true);
 
     const handleScroll = (e) => {
         if (
@@ -41,7 +47,10 @@ const PostsPage = () => {
     useEffect(() => {
         setPosts([]);
         setCurrentPage(1);
+
         (async () => {
+            setPageLoading(true);
+            await delay(500);
             const query = getQueryString(filters);
             const result = await getPosts(query);
             if (result.ok) {
@@ -52,9 +61,18 @@ const PostsPage = () => {
             } else {
                 ErrorToast('Oops...');
             }
+            setPageLoading(false);
         })();
+
         console.log(filters);
     }, [filters]);
+
+    useEffect(() => {
+        (async () => {
+            await delay(500);
+            setPageLoading(false);
+        })();
+    }, []);
 
     useEffect(() => {
         if (isLoading) {
@@ -83,14 +101,21 @@ const PostsPage = () => {
 
     return (
         <>
+            <Header />
             <section className='content'>
                 <div className='container'>
-                    <Filter />
-                    <div className='posts-wrapper'>
-                        {posts.map((post) => {
-                            return <Post key={post.id} {...post} />;
-                        })}
-                    </div>
+                    {isPageLoading ? (
+                        <Loader />
+                    ) : (
+                        <>
+                            <Filter />
+                            <div className='posts-wrapper'>
+                                {posts.map((post) => {
+                                    return <Post key={post.id} {...post} />;
+                                })}
+                            </div>
+                        </>
+                    )}
                 </div>
                 {token && (
                     <div className='create-new-post'>
@@ -104,6 +129,7 @@ const PostsPage = () => {
                         </Fab>
                     </div>
                 )}
+                <ToastContainer />
             </section>
         </>
     );
