@@ -39,11 +39,7 @@ const Post = ({
                 setCount((prev) => prev + 1);
                 setLiked(true);
             } else {
-                if (resposne.status === 401) {
-                    ErrorToast('Вы не авторизованы');
-                } else {
-                    ErrorToast(ERROR_500);
-                }
+                resposne.status === 401 ? ErrorToast('Вы не авторизованы') : ErrorToast(ERROR_500);
             }
         }
     };

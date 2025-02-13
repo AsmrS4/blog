@@ -39,12 +39,8 @@ const Filter = () => {
     useEffect(() => {
         (async () => {
             const result = await fetchTags();
-            if (result.ok) {
-                const tags = await result.json();
-                setTags(tags);
-            } else {
-                setTags([]);
-            }
+            const tags = await result.json();
+            setTags(result.ok ? tags : []);
         })();
     }, []);
 

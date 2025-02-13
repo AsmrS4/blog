@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
 import dayjs from 'dayjs';
 import { Button, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider, AdapterDayjs } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ToastContainer } from 'react-toastify';
+import { Link } from 'react-router';
 
 import './index.scss';
 import Header from '../../components/header/Header';
-
-import { registerUser } from '../../api/user/user';
-
-import { useInput } from '../../hooks/useInput';
 import { ErrorToast, SuccessToast } from '../../utils/notifications';
+import { useInput } from '../../hooks/useInput';
 import { transformDateJson } from '../../utils/converter';
+import { registerUser } from '../../api/user/user';
 import { delay } from '../../utils/delay';
 
 const RegisterPage = () => {
@@ -49,11 +48,9 @@ const RegisterPage = () => {
             localStorage.setItem('token', token.token);
             SuccessToast('Аккаунт успешно создан');
         } else {
-            if (result.status === 400) {
-                ErrorToast('Неккоректные данные');
-            } else if (result.status >= 500) {
-                ErrorToast('Ошибка сервера');
-            }
+            result.status === 400
+                ? ErrorToast('Неккоректные данные')
+                : ErrorToast('Ошибка сервера');
         }
         setLoading(false);
     };

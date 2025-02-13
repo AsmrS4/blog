@@ -71,11 +71,7 @@ const ProfilePage = () => {
             let data = await result.json();
             setUserProfile((prev) => ({ ...prev, ...data }));
         } else {
-            if (result.status === 401) {
-                WarningToast(ERROR_401);
-            } else {
-                ErrorToast(ERROR_500);
-            }
+            result.status === 401 ? WarningToast(ERROR_401) : ErrorToast(ERROR_500);
         }
         setIsLoading(false);
     };
@@ -92,11 +88,7 @@ const ProfilePage = () => {
     }, [isLoading]);
 
     useEffect(() => {
-        if (email.emailError || phone.phoneError || fullName.isEmpty) {
-            setIsError(true);
-        } else {
-            setIsError(false);
-        }
+        setIsError(email.emailError || phone.phoneError || fullName.isEmpty);
     }, [email.emailError, phone.phoneError, fullName.isEmpty]);
 
     return (

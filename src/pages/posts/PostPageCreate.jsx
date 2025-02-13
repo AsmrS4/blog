@@ -17,12 +17,12 @@ import { delay } from '../../utils/delay';
 const PostPageCreate = () => {
     const title = useInput('', { isEmpty: true });
     const text = useInput('', { isEmpty: true });
-
     const readingTime = useInput('', { isEmpty: true });
-    const [isFormError, setIsError] = useState(true);
+
     const [imageURL, setImage] = useState('');
     const [tags, setTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
+    const [isFormError, setIsError] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
@@ -61,11 +61,7 @@ const PostPageCreate = () => {
         setIsLoading(false);
     };
     useEffect(() => {
-        if (title.isEmpty || text.isEmpty || selectedTags.isEmpty || readingTime.isEmpty) {
-            setIsError(true);
-        } else {
-            setIsError(false);
-        }
+        setIsError(title.isEmpty || text.isEmpty || selectedTags.isEmpty || readingTime.isEmpty);
     }, [title.isEmpty, text.isEmpty, selectedTags.isEmpty, readingTime.isEmpty]);
 
     useEffect(() => {

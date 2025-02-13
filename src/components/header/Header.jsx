@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { LogoutIcon, MenuIcon } from '@mui/icons-material';
-
 import {
     AppBar,
     Box,
@@ -13,9 +11,9 @@ import {
     Toolbar,
     Typography,
 } from '@mui/material';
-
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router';
-
 import { logoutUser } from '../../api/user/user';
 
 function Header() {

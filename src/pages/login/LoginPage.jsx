@@ -19,13 +19,6 @@ const LoginPage = () => {
     const [isFormError, setIsError] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    useEffect(() => {
-        if (email.emailError || password.minLengthError) {
-            setIsError(true);
-        } else {
-            setIsError(false);
-        }
-    }, [email.emailError, password.minLengthError]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,6 +35,10 @@ const LoginPage = () => {
         }
         setIsLoading(false);
     };
+
+    useEffect(() => {
+        setIsError(email.emailError || password.minLengthError);
+    }, [email.emailError, password.minLengthError]);
 
     return (
         <>

@@ -47,7 +47,6 @@ const PostsPage = () => {
     useEffect(() => {
         setPosts([]);
         setCurrentPage(1);
-
         (async () => {
             setPageLoading(true);
             await delay(500);
