@@ -18,10 +18,6 @@ export const useValidation = (value, validations) => {
         return regex.test(String(phone).toLowerCase());
     };
 
-    const isDateValid = (date) => {
-        
-    }
-
     useEffect(() => {
         for (const validation in validations) {
             switch (validation) {
