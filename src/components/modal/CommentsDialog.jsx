@@ -65,22 +65,23 @@ export default function CommentsDialog({ open, setOpen, postId }) {
                 onClose={handleClose}
                 TransitionComponent={Transition}
                 sx={{
+                    marginTop: '10%',
                     boxSizing: 'border-box',
                 }}
             >
                 <AppBar sx={{ position: 'relative', top: 0 }}>
                     <Toolbar>
+                        <Typography sx={{ ml: 1, flex: 1 }} variant='h6' component='div'>
+                            Комментарии
+                        </Typography>
                         <IconButton
-                            edge='start'
+                            edge='end'
                             color='inherit'
                             onClick={handleClose}
                             aria-label='close'
                         >
                             <CloseIcon />
                         </IconButton>
-                        <Typography sx={{ ml: 2, flex: 1 }} variant='h6' component='div'>
-                            Комментарии к посту
-                        </Typography>
                     </Toolbar>
                 </AppBar>
                 <List

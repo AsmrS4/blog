@@ -17,6 +17,7 @@ import { ErrorToast, SuccessToast, WarningToast } from '../../utils/notification
 import { ERROR_400, ERROR_401, ERROR_500 } from '../../utils/statusCodes';
 import { transformDate, transformDateJson } from '../../utils/converter';
 import { delay } from '../../utils/delay';
+import UnAuth from '../../components/errors/UnAuth';
 
 const ProfilePage = () => {
     const [userProfile, setUserProfile] = useState({
@@ -27,7 +28,8 @@ const ProfilePage = () => {
         createTime: '',
     });
     const [isFormError, setIsError] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isAuth, setIsAuth] = useState(true);
 
     const email = useInput('', { isEmailValid: true });
     const fullName = useInput('', { isEmpty: true });
@@ -71,7 +73,12 @@ const ProfilePage = () => {
             let data = await result.json();
             setUserProfile((prev) => ({ ...prev, ...data }));
         } else {
-            result.status === 401 ? WarningToast(ERROR_401) : ErrorToast(ERROR_500);
+            if (result.status === 401) {
+                WarningToast(ERROR_401);
+            } else {
+                ErrorToast(ERROR_500);
+            }
+            setIsAuth(false);
         }
         setIsLoading(false);
     };
@@ -100,58 +107,64 @@ const ProfilePage = () => {
                         <Loader />
                     ) : (
                         <form className='profile-form' onSubmit={handleSubmit}>
-                            <div className='title-wrapper'>
-                                <h1 className='profile-form__title'>
-                                    <span>{userProfile.fullName}</span>
-                                </h1>
-                                <span>
-                                    {'Аккаунт создан: '}
-                                    {transformDate(userProfile.createTime)}
-                                </span>
-                            </div>
-                            <div className='inputs-wrapper'>
-                                <TextField
-                                    label='ФИО'
-                                    id='fullName'
-                                    value={fullName.value}
-                                    onChange={(e) => fullName.onChange(e)}
-                                    sx={{ width: '90%', marginBottom: '24px' }}
-                                    placeholder={'Введите свое имя'}
-                                />
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DatePicker
-                                        sx={{ width: '90%', marginBottom: '24px' }}
-                                        label='Дата рождения'
-                                        value={dateValue ? dayjs(dateValue) : null}
-                                        onChange={(e) => handleDate(e)}
-                                        dateFormat={'dd/MM/YYYY'}
-                                    />
-                                </LocalizationProvider>
-                                <TextField
-                                    label='Телефон'
-                                    value={phone.value}
-                                    onChange={(e) => phone.onChange(e)}
-                                    sx={{ width: '90%', marginBottom: '24px' }}
-                                    placeholder={'+7 (XXX) XXX XX-XX'}
-                                    error={phone.phoneError}
-                                />
-                                <TextField
-                                    label='Email'
-                                    value={email.value}
-                                    onChange={(e) => email.onChange(e)}
-                                    type={'email'}
-                                    sx={{ width: '90%', marginBottom: '24px' }}
-                                    error={email.emailError}
-                                />
-                            </div>
-                            <Button
-                                variant='contained'
-                                sx={{ width: '90%', marginBottom: '20px' }}
-                                type={'sumbit'}
-                                disabled={isFormError}
-                            >
-                                {'Сохранить'}
-                            </Button>
+                            {isAuth ? (
+                                <>
+                                    <div className='title-wrapper'>
+                                        <h1 className='profile-form__title'>
+                                            <span>{userProfile.fullName}</span>
+                                        </h1>
+                                        <span>
+                                            {'Аккаунт создан: '}
+                                            {transformDate(userProfile.createTime)}
+                                        </span>
+                                    </div>
+                                    <div className='inputs-wrapper'>
+                                        <TextField
+                                            label='ФИО'
+                                            id='fullName'
+                                            value={fullName.value}
+                                            onChange={(e) => fullName.onChange(e)}
+                                            sx={{ width: '90%', marginBottom: '24px' }}
+                                            placeholder={'Введите свое имя'}
+                                        />
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                            <DatePicker
+                                                sx={{ width: '90%', marginBottom: '24px' }}
+                                                label='Дата рождения'
+                                                value={dateValue ? dayjs(dateValue) : null}
+                                                onChange={(e) => handleDate(e)}
+                                                dateFormat={'dd/MM/YYYY'}
+                                            />
+                                        </LocalizationProvider>
+                                        <TextField
+                                            label='Телефон'
+                                            value={phone.value}
+                                            onChange={(e) => phone.onChange(e)}
+                                            sx={{ width: '90%', marginBottom: '24px' }}
+                                            placeholder={'+7 (XXX) XXX XX-XX'}
+                                            error={phone.phoneError}
+                                        />
+                                        <TextField
+                                            label='Email'
+                                            value={email.value}
+                                            onChange={(e) => email.onChange(e)}
+                                            type={'email'}
+                                            sx={{ width: '90%', marginBottom: '24px' }}
+                                            error={email.emailError}
+                                        />
+                                    </div>
+                                    <Button
+                                        variant='contained'
+                                        sx={{ width: '90%', marginBottom: '20px' }}
+                                        type={'sumbit'}
+                                        disabled={isFormError}
+                                    >
+                                        {'Сохранить'}
+                                    </Button>
+                                </>
+                            ) : (
+                                <UnAuth />
+                            )}
                         </form>
                     )}
                     <ToastContainer />
