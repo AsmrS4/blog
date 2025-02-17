@@ -17,6 +17,7 @@ import { setPagination } from '../../store/actions/pagination';
 import { ErrorToast } from '../../utils/notifications';
 import { getQueryString } from '../../utils/converter';
 import { delay } from '../../utils/delay';
+import { ERROR_500 } from '../../utils/statusCodes';
 
 const PostsPage = () => {
     const dispatch = useDispatch();
@@ -58,7 +59,7 @@ const PostsPage = () => {
                 setPosts(data.posts);
                 dispatch(setPagination(data.pagination));
             } else {
-                ErrorToast('Oops...');
+                ErrorToast(ERROR_500);
             }
             setPageLoading(false);
         })();

@@ -18,6 +18,7 @@ export default function TagSelect({ value = [], setValue, tags = [], marginX = '
                 <TextField {...params} label='Теги' placeholder='Укажите теги' />
             )}
             sx={{ maxWidth: '700px', width: '100%', marginBottom: '20px', marginX: marginX }}
+            slotProps={{ chip: { color: 'primary' } }}
         />
     );
 }

@@ -65,3 +65,19 @@ export const removeLike = async(postId) => {
         console.error('Failed add like to post: '+error);
     }
 }
+
+export const fetchConcretePost = async(id) => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`https://blog.kreosoft.space/api/post/${id}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        return response;
+    } catch (error) {
+        console.error(error)
+    }
+}

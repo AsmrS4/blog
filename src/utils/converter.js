@@ -44,3 +44,9 @@ export const getQueryString = (params, currentPage) => {
 export const transformDateJson = (date) => {
     return date.split('.').reverse().join('-')
 }
+
+export const transformDateHHMM = (date) => {
+    let dateString = String(date).slice(0, 16);
+    let arr = dateString.split('T')
+    return transformDate(arr[0]) + ' ' + arr[1]
+}

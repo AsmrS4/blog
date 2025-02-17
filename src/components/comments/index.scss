@@ -1,0 +1,28 @@
+@import '../../styles/variables.scss';
+
+.comment {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    .comment__header {
+        width: 100%;
+        height: auto;
+        font-size: 14px;
+    }
+    .comment__content {
+        width: 100%;
+        height: auto;
+        box-sizing: border-box;
+        padding: 10px 0;
+        font-size: 18px;
+        font-weight: 400;
+        color: $soft-black;
+        .deleted {
+            color: $hint-color;
+        }
+    }
+    .comment__date {
+        font-size: 14px;
+    }
+}

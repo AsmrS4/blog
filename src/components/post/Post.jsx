@@ -8,6 +8,7 @@ import { addLike, removeLike } from '../../api/post/post';
 
 import { ErrorToast } from '../../utils/notifications';
 import { transformDate } from '../../utils/converter';
+import CommentsDialog from '../modal/CommentsDialog';
 
 const Post = ({
     id = '',
@@ -15,7 +16,6 @@ const Post = ({
     title = '',
     description = '',
     image = '',
-    authorId = '',
     author = '',
     hasLike = false,
     likes = 0,
@@ -25,6 +25,11 @@ const Post = ({
 }) => {
     const [isLiked, setLiked] = useState(hasLike);
     const [likesCount, setCount] = useState(likes);
+    const [postId, setId] = useState(id);
+    const [open, setOpen] = useState(false);
+    const handleCommentsClick = () => {
+        setOpen(true);
+    };
     const handleLikeClick = async () => {
         if (isLiked) {
             const response = await removeLike(id);
@@ -73,7 +78,7 @@ const Post = ({
                         </div>
                     </div>
                     <div className='post__post-footer'>
-                        <div className='post__comment-count'>
+                        <div className='post__comment-count' onClick={handleCommentsClick}>
                             <ChatIcon
                                 sx={{ marginRight: '5px', color: '#336caf', cursor: 'pointer' }}
                             />
@@ -93,6 +98,7 @@ const Post = ({
                     </div>
                 </div>
             </div>
+            <CommentsDialog open={open} setOpen={setOpen} postId={postId} />
         </>
     );
 };
